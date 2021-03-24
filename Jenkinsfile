@@ -19,7 +19,7 @@ pipeline {
 
             steps { 
 
-                git 'https://github.com/Vijay1129/dockerwebapp.git' 
+                git 'git@github.com:Vijay1129/dockerwebapp.git' 
 
             }
 
