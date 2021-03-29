@@ -1,40 +1,11 @@
-pipeline { 
-    environment { 
-        registry = "vijay1229/dockerwebapp1" 
-        registryCredential = 'dockerHub' 
-        dockerImage = '' 
-    }
-    agent any 
-    stages { 
-        stage('Cloning our Git') { 
+node {
+    checkout scm
 
-            steps { 
+    docker.withRegistry('https://registry.hub.docker.com', 'dockerHub') {
 
-                git 'https://github.com/Vijay1129/dockerwebapp.git' 
-                
-            }
+        def customImage = docker.build("vijay1229/dockerwebapp")
 
-        } 
-        stage('Building our image') { 
-            steps { 
-                script { 
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
-                }
-            } 
-        }
-        stage('Deploy our image') { 
-            steps { 
-                script { 
-                    docker.withRegistry( '', registryCredential ) { 
-                        dockerImage.push() 
-                    }
-                } 
-            }
-        } 
-        stage('Cleaning up') { 
-            steps { 
-                sh "docker rmi $registry:$BUILD_NUMBER" 
-            }
-        } 
+        /* Push the container to the custom Registry */
+        customImage.push()
     }
 }
