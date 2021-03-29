@@ -6,7 +6,7 @@ node {
         def customImage = docker.build("vijay1229/dockerwebapp")
 
         /* Push the container to the custom Registry */
-        customImage.run("49160:8080")
+        customImage.run("-p 49160:8080")
         customImage.push()
     }
 }
